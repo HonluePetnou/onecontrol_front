@@ -1,28 +1,9 @@
-import { PrismaClient } from "../app/generated/prisma/client";
-import { PrismaMariaDb } from "@prisma/adapter-mariadb";
-import { env } from "@/config/env";
-import { DB_DEFAULTS } from "@/config/constants";
+// Prisma has been removed from this project. This file is a placeholder
+// to avoid runtime import errors in other modules that still import
+// `@/lib/prisma`. If you want to restore Prisma later, re-add the
+// generated client and the proper initialization here.
 
-// Use a properly initialized global holder so the symbol exists at runtime
-const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
+const noop = {} as any;
 
-// Create MariaDB adapter using env values
-const adapter = new PrismaMariaDb({
-  host: env.database.host,
-  port: env.database.port,
-  user: env.database.user,
-  password: env.database.password,
-  database: env.database.name,
-  connectionLimit: DB_DEFAULTS.CONNECTION_LIMIT,
-});
-
-const client =
-  globalForPrisma.prisma ||
-  new PrismaClient({
-    adapter,
-  });
-
-if (env.app.env !== "production") globalForPrisma.prisma = client;
-
-export default client;
-export const prisma: any = client;
+export default noop;
+export const prisma: any = noop;

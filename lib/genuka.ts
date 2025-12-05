@@ -9,7 +9,7 @@ export interface TokenResponse {
 }
 
 export async function initializeGenuka(companyId: string) {
-  return await Genuka.initialize({ id: companyId });
+  return await Genuka.initialize({ id: companyId});
 }
 
 export async function exchangeCodeForToken(code: string): Promise<TokenResponse> {

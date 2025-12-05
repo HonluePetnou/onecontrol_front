@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/stores";
-import { verifySession } from "@/lib/auth";
+import { getAuthenticatedCompany } from "@/lib/auth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,15 +24,16 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const sessionData = await verifySession();
-  const user = sessionData?.user || null;
+  const company = await getAuthenticatedCompany();
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthProvider company={user as any}>{children}</AuthProvider>
+        <AuthProvider company={company}>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

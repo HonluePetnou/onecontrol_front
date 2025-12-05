@@ -1,6 +1,6 @@
 "use client";
 import { getOrders } from "@/dal/get-orders";
-// import { requireAuth } from "@/lib/auth";
+import { requireAuth } from "@/lib/auth";
 import { useAuthStore } from "@/stores";
 import React, { useEffect } from "react";
 

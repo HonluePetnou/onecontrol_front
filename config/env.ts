@@ -51,6 +51,16 @@ export function validateEnv() {
     console.log('✓ Environment variables validated successfully');
   } catch (error) {
     console.error('✗ Environment validation failed:', (error as Error).message);
-    process.exit(1);
+    // Avoid calling Node-specific APIs (like process.exit) when running
+    // in Edge runtime (middleware). Re-throw the error so callers can
+    // handle it appropriately instead of terminating the runtime.
+    if (typeof process !== 'undefined' && typeof (process as any).exit === 'function') {
+      // Node environment: exit with non-zero code
+      (process as any).exit(1);
+    }
+
+    // Edge or other non-Node runtimes: throw to surface the problem to the
+    // caller (middleware, serverless) without calling unsupported APIs.
+    throw error;
   }
 }

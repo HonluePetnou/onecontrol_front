@@ -5,17 +5,13 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-<<<<<<< HEAD
-  provider = "prisma-client"
-  output = "../app/generated/prisma"
-=======
   provider = "prisma-client-js"
->>>>>>> 4bc3751 (refactor: remove unused pages and components, update authentication flow)
+  output   = "../app/generated/prisma"
 }
 
 datasource db {
   provider = "mysql"
-  }
+}
 
 model Company {
   id                String     @id @unique // Genuka company ID
@@ -34,7 +30,46 @@ model Company {
   @@index([id])
   @@index([handle])
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> 4bc3751 (refactor: remove unused pages and components, update authentication flow)
+model User {
+  id                String    @id @default(uuid())
+  email             String    @unique
+  password          String
+  name              String?
+  emailVerified     DateTime?
+  image             String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  sessions          Session[]
+  passwordResets    PasswordReset[]
+  
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@map("sessions")
+}
+
+model PasswordReset {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  used      Boolean  @default(false)
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@map("password_resets")
+}

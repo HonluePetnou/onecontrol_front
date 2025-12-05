@@ -1,39 +1,24 @@
-import prisma from "@/lib/prisma";
+// Prisma/database removed. Provide a stubbed service to avoid runtime imports.
 import type { CompanyCreate } from "@/types/company";
 
 export class CompanyDBService {
-
-  async findByAccessToken(accessToken: string) {
-    return prisma.company.findFirst({
-      where: { accessToken },
-    });
+  async findByAccessToken(_accessToken: string) {
+    return null;
   }
 
-
-  async upsertCompany(data: CompanyCreate) {
-    return prisma.company.upsert({
-      where: { id: data.id },
-      update: data,
-      create: data,
-    });
+  async upsertCompany(_data: CompanyCreate) {
+    throw new Error("Database access removed from this project");
   }
 
-  async findByCompanyId(id: string) {
-    return prisma.company.findUnique({
-      where: { id },
-    });
+  async findByCompanyId(_id: string) {
+    return null;
   }
 
-  async findByHandle(handle: string) {
-    return prisma.company.findUnique({
-      where: { handle },
-    });
+  async findByHandle(_handle: string) {
+    return null;
   }
 
-  async updateById(id: string, data: Partial<CompanyCreate>) {
-    return prisma.company.update({
-      where: { id },
-      data,
-    });
+  async updateById(_id: string, _data: Partial<CompanyCreate>) {
+    throw new Error("Database access removed from this project");
   }
 }
